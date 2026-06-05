@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:padding="32dp"
+    android:background="#0D1117">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="🎙️ VoiceAmp"
+        android:textSize="36sp"
+        android:textStyle="bold"
+        android:textColor="#F0F6FC"
+        android:layout_marginBottom="8dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="WebRTC AEC · NS · AGC"
+        android:textSize="13sp"
+        android:textColor="#8B949E"
+        android:layout_marginBottom="36dp" />
+
+    <TextView
+        android:id="@+id/tvBtDevice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="블루투스 확인 중..."
+        android:textSize="15sp"
+        android:textColor="#58A6FF"
+        android:layout_marginBottom="12dp" />
+
+    <TextView
+        android:id="@+id/tvStatus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="대기 중"
+        android:textSize="17sp"
+        android:textColor="#8B949E"
+        android:layout_marginBottom="36dp" />
+
+    <Button
+        android:id="@+id/btnToggle"
+        android:layout_width="160dp"
+        android:layout_height="160dp"
+        android:text="▶  시작"
+        android:textSize="19sp"
+        android:textStyle="bold"
+        android:textColor="#FFFFFF"
+        android:backgroundTint="#1565C0"
+        android:layout_marginBottom="40dp" />
+
+    <!-- WebRTC 기능 토글 -->
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="start">
+
+        <CheckBox
+            android:id="@+id/cbAec"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="🔇  AEC — 에코 제거"
+            android:textSize="14sp"
+            android:textColor="#C9D1D9"
+            android:checked="true"
+            android:buttonTint="#58A6FF"
+            android:layout_marginBottom="8dp" />
+
+        <CheckBox
+            android:id="@+id/cbNs"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="🌫️  NS — 잡음 억제"
+            android:textSize="14sp"
+            android:textColor="#C9D1D9"
+            android:checked="true"
+            android:buttonTint="#58A6FF"
+            android:layout_marginBottom="8dp" />
+
+        <CheckBox
+            android:id="@+id/cbAgc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="📶  AGC — 자동 볼륨"
+            android:textSize="14sp"
+            android:textColor="#C9D1D9"
+            android:checked="true"
+            android:buttonTint="#58A6FF" />
+
+    </LinearLayout>
+
+</LinearLayout>
