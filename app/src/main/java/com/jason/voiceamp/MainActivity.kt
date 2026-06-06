@@ -13,6 +13,7 @@ import android.os.Build
 import android.os.Bundle
 import android.widget.Button
 import android.widget.CheckBox
+import android.widget.SeekBar
 import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
@@ -30,6 +31,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var cbAec:     CheckBox
     private lateinit var cbNs:      CheckBox
     private lateinit var cbAgc:     CheckBox
+    private lateinit var seekGain:  SeekBar
+    private lateinit var tvGain:    TextView
 
     private val permLauncher = registerForActivityResult(
         ActivityResultContracts.RequestMultiplePermissions()
@@ -53,6 +56,8 @@ class MainActivity : AppCompatActivity() {
         cbAec     = findViewById(R.id.cbAec)
         cbNs      = findViewById(R.id.cbNs)
         cbAgc     = findViewById(R.id.cbAgc)
+        seekGain  = findViewById(R.id.seekGain)
+        tvGain    = findViewById(R.id.tvGain)
 
         btnToggle.setOnClickListener {
             if (isRunning) stopAudio() else checkPermissionsAndStart()
@@ -62,6 +67,17 @@ class MainActivity : AppCompatActivity() {
         cbAec.setOnCheckedChangeListener { _, v -> audioProcessor?.aecEnabled = v }
         cbNs.setOnCheckedChangeListener  { _, v -> audioProcessor?.nsEnabled  = v }
         cbAgc.setOnCheckedChangeListener { _, v -> audioProcessor?.agcEnabled = v }
+
+        // 볼륨 슬라이더: progress 0–30 → gain 0.0–3.0 (progress 10 = 1.0×)
+        seekGain.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+            override fun onProgressChanged(sb: SeekBar, progress: Int, fromUser: Boolean) {
+                val g = progress / 10f
+                tvGain.text = "${"%.1f".format(g)}×"
+                audioProcessor?.gain = g
+            }
+            override fun onStartTrackingTouch(sb: SeekBar) {}
+            override fun onStopTrackingTouch(sb: SeekBar) {}
+        })
 
         registerReceiver(btReceiver, IntentFilter().apply {
             addAction(BluetoothAdapter.ACTION_STATE_CHANGED)
@@ -89,6 +105,7 @@ class MainActivity : AppCompatActivity() {
             proc.agcEnabled        = cbAgc.isChecked
             proc.smartMuteEnabled  = true
             proc.debugLogging      = true
+            proc.gain              = seekGain.progress / 10f
             proc.onMuteChanged = { isMuted ->
                 runOnUiThread {
                     tvStatus.text = if (isMuted) "🤫 뮤트 (기침 감지)" else "🎙️ 실시간 송출 중..."

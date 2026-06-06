@@ -26,6 +26,9 @@ class AudioProcessor {
     @Volatile var smartMuteEnabled = true
     @Volatile var debugLogging     = false
 
+    /** 소프트웨어 게인 배율. 1.0f = 원본, 2.0f = 2배 증폭 */
+    @Volatile var gain = 1.0f
+
     /** 뮤트 상태 변화 콜백 — 오디오 스레드에서 호출, UI 갱신 시 runOnUiThread 필요 */
     var onMuteChanged: ((isMuted: Boolean) -> Unit)? = null
 
@@ -203,6 +206,7 @@ class AudioProcessor {
                 if (muted) {
                     player?.write(silenceBuf, 0, SUB_FRAME_SIZE)
                 } else {
+                    applyGain(subBuf, SUB_FRAME_SIZE)
                     player?.write(subBuf, 0, SUB_FRAME_SIZE)
                 }
 
@@ -221,6 +225,7 @@ class AudioProcessor {
                 if (prevMuted) {
                     player?.write(ShortArray(remaining), 0, remaining)
                 } else {
+                    applyGain(readBuf, remaining, offset)
                     player?.write(readBuf, offset, remaining)
                 }
             }
@@ -335,6 +340,14 @@ class AudioProcessor {
     // ════════════════════════════════════════════════════════════
     // 신호 분석 헬퍼
     // ════════════════════════════════════════════════════════════
+
+    private fun applyGain(buf: ShortArray, size: Int, offset: Int = 0) {
+        val g = gain
+        if (g == 1.0f) return
+        for (i in offset until offset + size) {
+            buf[i] = (buf[i] * g).toInt().coerceIn(Short.MIN_VALUE.toInt(), Short.MAX_VALUE.toInt()).toShort()
+        }
+    }
 
     private fun calcRms(buf: ShortArray, size: Int): Float {
         if (size == 0) return 0f

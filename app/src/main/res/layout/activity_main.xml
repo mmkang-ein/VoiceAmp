@@ -54,6 +54,49 @@
         android:backgroundTint="#1565C0"
         android:layout_marginBottom="40dp" />
 
+    <!-- 볼륨 슬라이더 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginBottom="32dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="4dp">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="🔊 볼륨"
+                android:textSize="14sp"
+                android:textColor="#C9D1D9" />
+
+            <TextView
+                android:id="@+id/tvGain"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="1.0×"
+                android:textSize="14sp"
+                android:textColor="#58A6FF" />
+
+        </LinearLayout>
+
+        <SeekBar
+            android:id="@+id/seekGain"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:max="30"
+            android:progress="10"
+            android:progressTint="#58A6FF"
+            android:thumbTint="#58A6FF" />
+
+    </LinearLayout>
+
     <!-- WebRTC 기능 토글 -->
     <LinearLayout
         android:layout_width="wrap_content"
